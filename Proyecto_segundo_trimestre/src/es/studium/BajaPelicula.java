@@ -2,21 +2,23 @@ package es.studium;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class BajaPelicula extends WindowAdapter implements ActionListener {
 	Frame ventana = new Frame("Baja Pelicula");
 	Choice choPeliculas = new Choice();
 	Button btnEliminar = new Button("Eliminar");
-	Dialog dlgConfirmar = new Dialog(ventana, "Confirmación", true);
+	Dialog dlgConfirmar = new Dialog(ventana, "Confirmacion", true);
 	Label lblConfirmar = new Label("¿Estás segur@ de borrar XXXXXXXXXXXX?");
 	Panel arriba = new Panel(), abajo = new Panel();
-	Button btnSi = new Button("Sí"), btnNo = new Button("No");
+	Button btnSi = new Button("Si"), btnNo = new Button("No");
 	Dialog dlgMensaje = new Dialog(ventana, "Respuesta", true);
 	Label lblMensaje = new Label("Error en Baja");
+	
 	String driver = "com.mysql.cj.jdbc.Driver", url = "jdbc:mysql://localhost:3306/cine", login = "root", password = "studium2025;";
 	Connection connection = null; Statement statement = null; ResultSet rs = null;
 
-	
 	String usuarioSesion = "administrador";
 
 	public BajaPelicula() {
@@ -56,8 +58,19 @@ public class BajaPelicula extends WindowAdapter implements ActionListener {
 			rs = statement.executeQuery("SELECT * FROM peliculas");
 			choPeliculas.removeAll();
 			choPeliculas.add("Seleccionar una pelicula...");
+			
+			DateTimeFormatter formatoEuropeo = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			
 			while(rs.next()) {
-				choPeliculas.add(rs.getInt("idPelicula") + " " + rs.getString("tituloPelicula") + " " + rs.getString("fechaEstreno"));
+				Date fechaSQL = rs.getDate("fechaEstreno");
+				String fechaFormateada = "";
+				
+				if (fechaSQL != null) {
+					LocalDate fechaLocal = fechaSQL.toLocalDate();
+					fechaFormateada = fechaLocal.format(formatoEuropeo);
+				}
+				
+				choPeliculas.add(rs.getInt("idPelicula") + " " + rs.getString("tituloPelicula") + " " + fechaFormateada);
 			}
 		} catch(Exception e) { 
 			System.err.println("Error al rellenar: " + e.getMessage()); 
@@ -93,7 +106,6 @@ public class BajaPelicula extends WindowAdapter implements ActionListener {
 				
 				String sql = "DELETE FROM peliculas WHERE idPelicula = " + id;
 				statement.executeUpdate(sql);
-				
 				
 				logmanager.registrar(usuarioSesion, "Baja: " + sql);
 				

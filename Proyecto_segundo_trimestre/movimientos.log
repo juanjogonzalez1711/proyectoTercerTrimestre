@@ -13,3 +13,8 @@
 [13-06-2026 18:56:18] [usuario] [Alta: INSERT INTO peliculas (tituloPelicula, fechaEstreno, idProductoraFK) VALUES ('IT', '2003-08-20', 2)]
 [13-06-2026 18:56:33] [administrador] [Exportar PDF: Archivo 'reporte_paises.pdf' generado desde consulta países.]
 [13-06-2026 18:56:41] [administrador] [Exportar PDF: Archivo 'reporte_productoras.pdf' generado desde consulta productoras.]
+[16-06-2026 17:44:17] [administrador] [Inicio de sesión correcto.]
+[16-06-2026 17:45:31] [administrador] [Inicio de sesión correcto.]
+[16-06-2026 18:09:39] [usuario] [Inicio de sesión correcto.]
+[16-06-2026 18:11:04] [usuario] [Alta: INSERT INTO peliculas (tituloPelicula, fechaEstreno, idProductoraFK) VALUES ('simba', '2006-05-17', 1)]
+[16-06-2026 18:12:39] [administrador] [Baja: DELETE FROM peliculas WHERE idPelicula = 3]
